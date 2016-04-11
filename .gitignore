@@ -167,9 +167,7 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
-# Ignore .nuget folder
-**/.nuget/*
-# Allow NuGet.exe
+#Allow NuGet.exe
 !NuGet.exe
 
 # Microsoft Azure Build Output
