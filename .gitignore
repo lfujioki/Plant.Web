@@ -1,6 +1,6 @@
 ## Ignore Files List
-Plants.Web/ConnectionStrings.config
-Plants.Web/PrivateSettings.config
+**/Plants.Web/ConnectionStrings.config
+**/Plants.Web/PrivateSettings.config
 
 
 ## Ignore Visual Studio temporary files, build results, and
