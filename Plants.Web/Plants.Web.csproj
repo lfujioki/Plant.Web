@@ -208,12 +208,18 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PlantsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Enums\CategoryEntities.cs" />
+    <Compile Include="Enums\SizeEntities.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Extensions\DictionaryExt.cs" />
+    <Compile Include="Models\Extensions\HtmlHelperExt.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Responses\BaseResponse.cs" />
@@ -1081,16 +1087,17 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\myApp.ng.app.js" />
+    <Content Include="Views\Plants\Plants.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Api\" />
     <Folder Include="Domain\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Models\Extensions\" />
     <Folder Include="Models\Requests\" />
     <Folder Include="Scripts\core\services\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Def\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
