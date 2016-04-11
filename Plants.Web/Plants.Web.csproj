@@ -216,6 +216,11 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Responses\BaseResponse.cs" />
+    <Compile Include="Models\Responses\ErrorResponse.cs" />
+    <Compile Include="Models\Responses\ItemResponse.cs" />
+    <Compile Include="Models\Responses\ItemsResponse.cs" />
+    <Compile Include="Models\Responses\SuccessResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1073,6 +1078,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\Api\" />
+    <Folder Include="Models\Requests\" />
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
