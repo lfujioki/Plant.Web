@@ -1082,7 +1082,11 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Api\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Models\Extensions\" />
     <Folder Include="Models\Requests\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
