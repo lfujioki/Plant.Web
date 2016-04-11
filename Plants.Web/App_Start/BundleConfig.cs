@@ -26,13 +26,6 @@ namespace Plants.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
-
-            //  Starter application
-            //  ------------------------------------------------------------
-            bundles.Add(new ScriptBundle("~/starter/base").Include(
-                      "~/Scripts/myApp.js"));
-
-            BundleTable.EnableOptimizations = false;
         }
     }
 }
