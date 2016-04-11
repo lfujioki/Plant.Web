@@ -167,6 +167,9 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+#Allow NuGet.exe
+!NuGet.exe
+
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
