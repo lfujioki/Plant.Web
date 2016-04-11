@@ -1073,6 +1073,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Plants\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
