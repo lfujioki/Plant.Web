@@ -18,6 +18,11 @@ namespace Plants.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //  enable Unity injection - based on example from http://www.asp.net/web-api/overview/advanced/dependency-injection
+            UnityConfig.RegisterComponents(GlobalConfiguration.Configuration);
+            // UnityConfig.RegisterComponents();
+            var container = UnityConfig.GetContainer();
         }
     }
 }
