@@ -28,23 +28,9 @@ namespace Plants.Web
         {
             var container = new UnityContainer();
 
-            // register all your components with the container here
-            // it is NOT necessary to register your controllers
-
-            // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<IPlantsService, PlantsService>(new TransientLifetimeManager());
-            //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
-            // container.RegisterType(typeof(IUserStore<ApplicationUser>), typeof(UserStore<ApplicationUser>));
-
-
-            //container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
-            //container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
-            //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
-            // container.RegisterType<AccountController>(new InjectionConstructor());
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
-
-
 
             //  this line is needed so that the resolver can be used by api controllers 
             config.DependencyResolver = new Starter.Web.Core.Injection.UnityResolver(container);
@@ -58,8 +44,7 @@ namespace Plants.Web
             System.Web.Http.Filters.IFilterProvider defaultprovider = providers.First(p => p is ActionDescriptorFilterProvider);
 
             config.Services.Remove(typeof(System.Web.Http.Filters.IFilterProvider), defaultprovider);
-
-
+        
             _container = container;
         }
     }
