@@ -78,24 +78,24 @@ namespace Plants.Web.Services
             return id;
         }
 
-        //public void UpdatePlant(PlantUpdateRequest model)
-        //{
-        //    DataProvider.ExecuteNonQuery(GetConnection, "dbo.Plants_Update"
-        //           , inputParamMapper: delegate (SqlParameterCollection paramCollection)
-        //           {
-        //               paramCollection.AddWithValue("@Id", model.Id);
-        //               paramCollection.AddWithValue("@Name", model.Name);
-        //               paramCollection.AddWithValue("@Description", model.Description);
-        //               paramCollection.AddWithValue("@Keywords", model.Keywords);
-        //               paramCollection.AddWithValue("@CategoryId", model.CategoryId);
-        //               paramCollection.AddWithValue("@SizeId", model.SizeId);
-        //               paramCollection.AddWithValue("@IsBioluminescent", model.IsBioluminescent);
-        //           }
-        //           , returnParameters: delegate (SqlParameterCollection param)
-        //           {
-        //           }
-        //           );
-        //}
+        public void UpdatePlant(PlantUpdateRequest model)
+        {
+            DataProvider.ExecuteNonQuery(GetConnection, "dbo.Plants_Update"
+                   , inputParamMapper: delegate (SqlParameterCollection paramCollection)
+                   {
+                       paramCollection.AddWithValue("@Id", model.Id);
+                       paramCollection.AddWithValue("@Name", model.Name);
+                       paramCollection.AddWithValue("@Description", model.Description);
+                       paramCollection.AddWithValue("@Keywords", model.Keywords);
+                       paramCollection.AddWithValue("@CategoryId", model.CategoryId);
+                       paramCollection.AddWithValue("@SizeId", model.SizeId);
+                       paramCollection.AddWithValue("@IsBioluminescent", model.IsBioluminescent);
+                   }
+                   , returnParameters: delegate (SqlParameterCollection param)
+                   {
+                   }
+                   );
+        }
 
 
         ////------------------------------------------------------

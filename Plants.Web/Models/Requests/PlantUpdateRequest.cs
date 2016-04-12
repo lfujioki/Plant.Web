@@ -1,6 +1,9 @@
-﻿namespace Starter.Web.Controllers.Api
+﻿using Plants.Web.Models.Requests;
+
+namespace Plants.Web.Models.Requests
 {
-    public class PlantUpdateRequest
+    public class PlantUpdateRequest : PlantAddRequest
     {
+        public int Id { get; set; }
     }
 }

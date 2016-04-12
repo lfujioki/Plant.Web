@@ -51,21 +51,21 @@ namespace Plants.Web.Controllers.Api
             return Request.CreateResponse(response);
         }
 
-        //[Route("{id:int}"), HttpPut]
-        //public HttpResponseMessage UpdatePlant(PlantUpdateRequest model, int id)
-        //{
-        //    // if the Model does not pass validation, there will be an Error response returned with errors
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-        //    }
+        [Route("{id:int}"), HttpPut]
+        public HttpResponseMessage UpdatePlant(PlantUpdateRequest model, int id)
+        {
+            // if the Model does not pass validation, there will be an Error response returned with errors
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
 
-        //    SuccessResponse response = new SuccessResponse();
+            SuccessResponse response = new SuccessResponse();
 
-        //    _plantsService.UpdatePlant(model);
+            _plantsService.UpdatePlant(model);
 
-        //    return Request.CreateResponse(response);
-        //}
+            return Request.CreateResponse(response);
+        }
 
 
 

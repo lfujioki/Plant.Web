@@ -7,11 +7,6 @@ using System.Web.Mvc;
 using System.Linq;
 using Unity.Mvc5;
 using System.Web.Http.Filters;
-using Starter.Web.Core.Services;
-using System.Data.Entity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Starter.Web.Controllers;
 
 namespace Plants.Web
 {

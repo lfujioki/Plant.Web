@@ -13,6 +13,7 @@ namespace Plants.Web.Services
         //List<Plant> GetPlants();
         //Plant GetPlantById(int id);
         int InsertPlant(PlantAddRequest model);
-        //void UpdatePlant(PlantUpdateRequest model);
+
+        void UpdatePlant(PlantUpdateRequest model);
     }
 }
