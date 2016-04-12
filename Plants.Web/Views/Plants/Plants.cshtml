@@ -5,4 +5,265 @@
 }
 
 
-<h2>Add a Plant :@Model.Item</h2>
+<h2>Add a Plant: @Model.Item</h2>
+
+<div data-ng-controller="plantController as plantCtrl" data-ng-cloak>
+    {{plantCtrl.newPlant}}
+    {{plantCtrl.newPlantId}}
+    <form id="plantForm"
+          name="plantCtrl.queryForm"
+          novalidate>
+
+        <div class="form-group inputField"
+             ng-class="plantCtrl.hasErrorClass(plantCtrl.queryForm.name.$valid)">
+            <input type="text"
+                   data-ng-model="plantCtrl.newPlant.Name"
+                   placeholder="Name of Plant"
+                   name="name"
+                   id="name"
+                   class="form-control"
+                   ng-minlength="2"
+                   ng-maxlength="100"
+                   autofocus
+                   required />
+
+            <div role="alert" class="help-inline error">
+                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.required">Name is required</span>
+                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.minlength">Too short! Name must be at least 2 chars</span>
+                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.maxlength">Too long! Name must be less than 100 chars</span>
+            </div>
+        </div>
+
+        <textarea data-ng-model="plantCtrl.newPlant.Description"
+                  placeholder="Description of Plant"
+                  name="description"
+                  id="description"
+                  class="form-control"></textarea>
+
+        <br />
+        <div class="form-group"
+             ng-class="plantCtrl.hasErrorClass(plantCtrl.queryForm.categoryId.$valid)">
+            <select class="dropdown col-sm-7"
+                    name="categoryId"
+                    id="categoryId"
+                    data-ng-model="plantCtrl.newPlant.CategoryId"
+                    data-ng-options="key for (key , value) in plantCtrl.categoryTypes">
+                <option value="">-- Select Category --</option>
+            </select>
+            <div role="alert" class="help-inline error">
+                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()"><br /><br />Please select a Category</span>
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group"
+             ng-class="plantCtrl.hasErrorClass(plantCtrl.queryForm.sizeId.$valid)">
+            <select class="dropdown col-sm-7"
+                    name="sizeId"
+                    id="sizeId"
+                    data-ng-model="plantCtrl.newPlant.SizeId"
+                    data-ng-options="key for (key , value) in plantCtrl.sizeTypes">
+                <option value="">-- Select Size --</option>
+            </select>
+            <div role="alert" class="help-inline error">
+                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()"><br /><br />Please select a Size</span>
+            </div>
+        </div>
+
+        <br />
+        <label>
+            Bioluminescence:
+            <input type="checkbox"
+                   data-ng-model="plantCtrl.newPlant.IsBioluminescent"
+                   name="isBioluminescent"
+                   id="isBioluminescent"
+                   ng-true-value="'True'"
+                   ng-false-value="'False'" />
+        </label><br /><br />
+
+        <button type="button"
+                id="cmdResetQuestion"
+                class="btn btn-sm"
+                ng-click="plantCtrl.resetQueryForm()">
+            <i class="ace-icon fa fa-times"></i>
+            Cancel
+        </button>
+        <button type="submit"
+                id="cmdAddQuestion"
+                class="btn btn-sm btn-primary"
+                ng-click="plantCtrl.submit()">
+            <i class="ace-icon fa fa-check"></i>
+            Submit
+        </button>
+    </form>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        myApp.page.plantId = @Html.RawJson(Model.Item);
+        myApp.page.sizeTypes = @Html.RawJson(Model.Items[0]);
+        myApp.page.categoryTypes = @Html.RawJson(Model.Items[1]);
+    </script>
+
+    <script src="~/Scripts/core/services/myApp.services.plants.js"></script>
+
+    <script type="text/javascript">
+
+        (function () {
+            'use strict';
+
+            angular.module(APPNAME)
+                 .factory('$plantService', PlantServiceFactory);
+
+            PlantServiceFactory.$inject = ['$baseService', '$myApp'];
+
+            function PlantServiceFactory($baseService, $myApp) {
+
+                var aServiceObject = myApp.services.plants;
+
+                var newService = $baseService.merge(true, {}, aServiceObject, $baseService);
+
+                return newService;
+            }
+        })();
+
+        (function () {
+            'use strict';
+
+            angular.module(APPNAME)
+                .controller('plantController', PlantController);
+
+            PlantController.$inject = [
+                  '$scope'
+                , '$baseController'
+                , '$plantService'
+
+            ];
+
+            function PlantController(
+                  $scope
+                , $baseController
+                , $plantService
+                ) {
+
+                var vm = this;
+                $baseController.merge(vm, $baseController);
+                vm.$scope = $scope;
+                vm.$plantService = $plantService;
+                vm.notify = vm.$plantService.getNotifier($scope);
+
+                vm.newPlant = {};
+                vm.queryForm = null;
+                vm.showNewPlantErrors = false;
+                vm.newPlantId = myApp.page.plantId || {};
+                vm.categoryTypes = myApp.page.categoryTypes;
+                vm.sizeTypes = myApp.page.sizeTypes;
+                vm.testTypes = myApp.page.testTypes;
+
+                vm.getPlant = _getPlant;
+                vm.submit = _submit;
+
+                vm.onGetPlantSuccess = _onGetPlantSuccess;
+                vm.onGetPlantError = _onGetPlantError;
+                vm.onSubmitPlantSuccess = _onSubmitPlantSuccess;
+                vm.onSubmitPlantError = _onSubmitPlantError;
+
+                vm.hasErrorClass = _hasErrorClass;
+                vm.resetQueryForm = _resetQueryForm;
+
+                vm.showNewQuestionTypeErrors = _showNewQuestionTypeErrors;
+                vm.ratingTypeShowError = _ratingTypeShowError;
+
+                render();
+
+                function render() {
+                    vm.getPlant(vm.newPlantId);
+                }
+
+                function _getPlant(plantId) {
+                    if (plantId === parseInt(plantId, 10)) {
+                        vm.$plantService.getById(plantId, vm.onGetPlantSuccess, vm.onGetPlantError);
+                    }
+
+                }
+
+                function _onGetPlantSuccess(data) {
+                    vm.notify(function () {
+                        if (data && data.Item) {
+                            vm.newPlant = data.Item;
+                        }
+                    });
+                }
+
+                function _onGetPlantError(jqXhr, error) {
+                    vm.$log.log(error)
+                }
+
+                function _submit() {
+                    vm.showNewPlantErrors = true;
+
+                    if (!vm.queryForm.$valid) {
+                        return;
+                    }
+
+                    if (vm.newPlantId !== parseInt(vm.newPlantId, 10)) {
+                        vm.$plantService.add(vm.newPlant, vm.onSubmitPlantSuccess, vm.onSubmitPlantError);
+                        vm.$log.log('sending out ajax call to insert');
+                    }
+                    else{
+                        vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onSubmitPlantSuccess, vm.onSubmitPlantError);
+                        vm.$log.log('sending out ajax call to update');
+                    }
+                };
+
+                function _onSubmitPlantSuccess(data) {
+                    vm.notify(function () {
+                        if (data && data.Item) {
+                            vm.$log.log('Successfully submitted plant');
+                            vm.newPlantId = data.Item;
+                            vm.$log.log(vm.newPlantId);
+                        }
+                    });
+                }
+
+                function _onSubmitPlantError(jqXhr, error) {
+                    vm.$log.log(error)
+                }
+
+
+                function _hasErrorClass(valid) {
+                    if (valid == false && vm.showNewPlantErrors == true) {
+                        return 'has-error';
+                    } else if (valid == true) {
+                        return '';
+                    }
+                }
+
+                function _resetQueryForm() {
+                    vm.showNewPlantErrors = false;
+                    vm.newPlant = {};
+                    vm.queryForm.$setPristine();
+                    vm.queryForm.$setUntouched()
+                }
+
+                function _showNewQuestionTypeErrors() {
+                    if (!vm.newPlant.typeId) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                function _ratingTypeShowError(data) {
+                    if (vm.updatedQuestion.typeId == 6 && data == null) {
+                        return 'Please select a value for this field.';
+                    }
+                }
+            }
+        })();
+
+
+
+    </script>
+}

@@ -1,6 +1,6 @@
-﻿using Plants.Web.Models.ViewModels;
+﻿using Plants.Web.Controllers;
+using Plants.Web.Models.ViewModels;
 using Starter.Web;
-using Starter.Web.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,8 @@ namespace Plants.Web.Controllers
     [RoutePrefix("plants")]
     public class PlantsController : BaseController
     {
+        public PlantsController() { }
+
         [Route, HttpGet]
         [Route("{id:int}")]
         public ActionResult Plants(int? id = null)
