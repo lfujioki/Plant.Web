@@ -46,8 +46,11 @@ namespace Plants.Web
                     "~/Scripts/core/controllers/*.js",
                     "~/Scripts/core/services/*.js"));
 
-
-            BundleTable.EnableOptimizations = false;
+            #if DEBUG
+                        BundleTable.EnableOptimizations = false;
+            #else
+                    BundleTable.EnableOptimizations = true;
+            #endif
         }
     }
 }
