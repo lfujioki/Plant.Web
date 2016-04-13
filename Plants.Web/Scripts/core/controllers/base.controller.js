@@ -35,7 +35,7 @@
             , $route: $route
             , $routeParams: $routeParams
             , $systemEventService: $systemEventService
-            , $alertService
+            , $alertService: $alertService
 
         };
 

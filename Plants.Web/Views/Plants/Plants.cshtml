@@ -106,7 +106,7 @@
         myApp.page.categoryTypes = @Html.RawJson(Model.Items[1]);
     </script>
 
-    <script src="~/Scripts/core/services/myApp.services.plants.js"></script>
+    <script src="~/Scripts/myApp.services.plants.js"></script>
 
     <script type="text/javascript">
 
@@ -119,11 +119,8 @@
             PlantServiceFactory.$inject = ['$baseService', '$myApp'];
 
             function PlantServiceFactory($baseService, $myApp) {
-
                 var aServiceObject = myApp.services.plants;
-
                 var newService = $baseService.merge(true, {}, aServiceObject, $baseService);
-
                 return newService;
             }
         })();
@@ -138,7 +135,6 @@
                   '$scope'
                 , '$baseController'
                 , '$plantService'
-
             ];
 
             function PlantController(
@@ -166,8 +162,10 @@
 
                 vm.onGetPlantSuccess = _onGetPlantSuccess;
                 vm.onGetPlantError = _onGetPlantError;
-                vm.onSubmitPlantSuccess = _onSubmitPlantSuccess;
-                vm.onSubmitPlantError = _onSubmitPlantError;
+                vm.onAddPlantSuccess = _onAddPlantSuccess;
+                vm.onAddPlantError = _onAddPlantError;
+                vm.onUpdatePlantSuccess = _onUpdatePlantSuccess;
+                vm.onUpdatePlantError = _onUpdatePlantError;
 
                 vm.hasErrorClass = _hasErrorClass;
                 vm.resetQueryForm = _resetQueryForm;
@@ -208,29 +206,48 @@
                     }
 
                     if (vm.newPlantId !== parseInt(vm.newPlantId, 10)) {
-                        vm.$plantService.add(vm.newPlant, vm.onSubmitPlantSuccess, vm.onSubmitPlantError);
+                        vm.$plantService.add(vm.newPlant, vm.onAddPlantSuccess, vm.onAddPlantError);
                         vm.$log.log('sending out ajax call to insert');
                     }
                     else{
-                        vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onSubmitPlantSuccess, vm.onSubmitPlantError);
+                        vm.$log.log(vm.newPlantId);
+
+                        vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onUpdatePlantSuccess, vm.onUpdatePlantError);
                         vm.$log.log('sending out ajax call to update');
                     }
                 };
 
-                function _onSubmitPlantSuccess(data) {
+                function _onAddPlantSuccess(data) {
+
                     vm.notify(function () {
                         if (data && data.Item) {
                             vm.$log.log('Successfully submitted plant');
                             vm.newPlantId = data.Item;
                             vm.$log.log(vm.newPlantId);
+
+                            vm.$alertService.success('Successfully submitted plant.');
                         }
                     });
                 }
 
-                function _onSubmitPlantError(jqXhr, error) {
+                function _onAddPlantError(jqXhr, error) {
                     vm.$log.log(error)
+                    vm.$alertService.error('There was a problem with the submit request. Please try again.');
                 }
 
+                function _onUpdatePlantSuccess(data){
+                    vm.notify(function () {
+                        if (data && data.Item) {
+                            vm.$log.log('Successfully updated plant');
+                            vm.$alertService.success('Successfully updated plant');
+                        }
+                    });
+                }
+
+                function _onUpdatePlantError(jqXhr, error) {
+                    vm.$log.log(error)
+                    vm.$alertService.error('There was a problem with the update request. Please try again.');
+                }
 
                 function _hasErrorClass(valid) {
                     if (valid == false && vm.showNewPlantErrors == true) {
