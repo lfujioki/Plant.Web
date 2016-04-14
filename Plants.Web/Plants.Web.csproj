@@ -1105,6 +1105,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\myApp.ng.app.js" />
     <Content Include="Views\Plants\Plants.cshtml" />
+    <Content Include="Views\Plants\Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

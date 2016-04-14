@@ -31,5 +31,11 @@ namespace Plants.Web.Controllers
 
             return View(model);
         }
+
+        [Route("get"), HttpGet]
+        public ActionResult Display()
+        {
+            return View();
+        }
     }
 }
