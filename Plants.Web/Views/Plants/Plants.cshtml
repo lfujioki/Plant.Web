@@ -210,6 +210,9 @@
                     }
                     else{
                         vm.$log.log(vm.newPlantId);
+                        vm.newPlant.Id = vm.newPlantId;
+                        vm.$log.log(vm.newPlant);
+
 
                         vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onUpdatePlantSuccess, vm.onUpdatePlantError);
                         vm.$log.log('sending out ajax call to update');
@@ -236,7 +239,7 @@
 
                 function _onUpdatePlantSuccess(data){
                     vm.notify(function () {
-                        if (data && data.Item) {
+                        if (data) {
                             vm.$log.log('Successfully updated plant');
                             vm.$alertService.success('Successfully updated plant');
                         }
