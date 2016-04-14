@@ -6,12 +6,12 @@
 <h2>Display</h2>
 
 <div data-ng-controller="plantListController as listCtrl">
-    <div class="list-group" data-ng-repeat="item in listCtrl">
+    <div class="list-group" data-ng-repeat="plant in listCtrl.plantList" data-ng-cloak>
         <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">{{item.Name}}</h4>
-            <p class="list-group-item-text">Group: {{item.CategoryType}}</p>
-            <p class="list-group-item-text">Size: {{item.Feet}} ft</p>
-            <p class="list-group-item-text">Bioluminescent: {{item.IsBioluminescent}}</p>
+            <h4 class="list-group-item-heading">{{plant.Name}}</h4>
+            <p class="list-group-item-text">Group: {{plant.CategoryType}}</p>
+            <p class="list-group-item-text">Size: {{plant.Feet}} ft</p>
+            <p class="list-group-item-text">Bioluminescent: {{plant.IsBioluminescent}}</p>
         </a>
     </div>
 </div>
@@ -22,10 +22,11 @@
 
     <script type="text/javascript">
         (function () {
+
             'use strict';
 
             angular.module(APPNAME)
-            .factory('plantService', PlantServiceFactory);
+                 .factory('$plantService', PlantServiceFactory);
 
             PlantServiceFactory.$inject = ['$baseService', '$myApp'];
 
@@ -49,7 +50,7 @@
             ];
 
             function PlantListController(
-                                  $scope
+                  $scope
                 , $baseController
                 , $plantService
                 ) {
@@ -60,18 +61,44 @@
                 vm.$plantService = $plantService;
                 vm.notify = vm.$plantService.getNotifier($scope);
 
+                vm.plantList = {};
+
+                vm.getPlants = _getPlants;
+
+                vm.onGetPlantsSuccess = _onGetPlantsSuccess;
+                vm.onGetPlantsError = _onGetPlantsError;
+
                 render();
 
                 function render() {
-                    vm.getPlant(vm.newPlantId);
+                    vm.getPlants();
                 }
 
+                function _getPlants() {
+                    vm.$plantService.get(vm.onGetPlantsSuccess, vm.onGetPlantsError);
+                }
+
+                function _onGetPlantsSuccess(data) {
+                    vm.notify(function () {
+                        if (data && data.Items) {
+                            vm.plantList = data.Items;
+                            vm.$log.log(vm.plantList)
+                        }
+                    });
+                }
+
+                function _onGetPlantsError(jqXhr, error) {
+                    vm.$log.log(error)
+                }
             }
-        })()
-
+        })();
     </script>
-
 }
+
+
+
+
+
 
 
 
