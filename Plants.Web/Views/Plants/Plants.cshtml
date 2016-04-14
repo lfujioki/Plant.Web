@@ -98,8 +98,8 @@
     </form>
 </div>
 
-@section scripts
-{
+@section scripts {
+
     <script type="text/javascript">
         myApp.page.plantId = @Html.RawJson(Model.Item);
         myApp.page.sizeTypes = @Html.RawJson(Model.Items[0]);
@@ -109,7 +109,6 @@
     <script src="~/Scripts/myApp.services.plants.js"></script>
 
     <script type="text/javascript">
-
         (function () {
             'use strict';
 

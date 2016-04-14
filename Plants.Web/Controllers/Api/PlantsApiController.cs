@@ -1,4 +1,5 @@
 ﻿//using Plants.Web.Domain;
+using Plants.Web.Domain;
 using Plants.Web.Models.Requests;
 using Plants.Web.Models.Responses;
 using Plants.Web.Services;
@@ -21,25 +22,25 @@ namespace Plants.Web.Controllers.Api
             _plantsService = plantsService;
         }
 
-        //[Route, HttpGet]
-        //public HttpResponseMessage GetAllPlants()
-        //{
-        //    ItemsResponse<Plant> response = new ItemsResponse<Plant>();
+        [Route, HttpGet]
+        public HttpResponseMessage GetAllPlants()
+        {
+            ItemsResponse<Plant> response = new ItemsResponse<Plant>();
 
-        //    response.Items = _plantsService.GetPlants();
+            response.Items = _plantsService.GetPlants();
 
-        //    return Request.CreateResponse(response);
-        //}
+            return Request.CreateResponse(response);
+        }
 
-        //[Route("{id:int}"), HttpGet]
-        //public HttpResponseMessage GetOnePlant(int id)
-        //{
-        //    ItemResponse<Plant> response = new ItemResponse<Plant>();
+        [Route("{id:int}"), HttpGet]
+        public HttpResponseMessage GetOnePlant(int id)
+        {
+            ItemResponse<Plant> response = new ItemResponse<Plant>();
 
-        //    response.Item = _plantsService.GetPlantById(id);
+            response.Item = _plantsService.GetPlantById(id);
 
-        //    return Request.CreateResponse(response);
-        //}
+            return Request.CreateResponse(response);
+        }
 
         [Route, HttpPost]
         public HttpResponseMessage InsertPlant(PlantAddRequest model)

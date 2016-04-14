@@ -7,49 +7,50 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Plants.Web.Domain;
 
 namespace Plants.Web.Services
 {
     public class PlantsService : BaseService, IPlantsService
     {
-        //public List<Plant> GetPlants()
-        //{
-        //    List<Plant> list = null;
+        public List<Plant> GetPlants()
+        {
+            List<Plant> list = null;
 
-        //    DataProvider.ExecuteCmd(GetConnection, "dbo.Plants_GetAll"
-        //       , inputParamMapper: null
-        //       , map: delegate (IDataReader reader, short set)
-        //       {
-        //           Plant plant = MapPlant(reader);
+            DataProvider.ExecuteCmd(GetConnection, "dbo.Plants_GetAll"
+               , inputParamMapper: null
+               , map: delegate (IDataReader reader, short set)
+               {
+                   Plant plant = MapPlant(reader);
 
-        //           if (list == null)
-        //           {
-        //               list = new List<Plant>();
-        //           }
-        //           list.Add(plant);
-        //       }
-        //       );
+                   if (list == null)
+                   {
+                       list = new List<Plant>();
+                   }
+                   list.Add(plant);
+               }
+               );
 
-        //    return list;
-        //}
+            return list;
+        }
 
-        //public Plant GetPlantById(int id)
-        //{
-        //    Plant p = null;
+        public Plant GetPlantById(int id)
+        {
+            Plant p = null;
 
-        //    DataProvider.ExecuteCmd(GetConnection, "dbo.Plants_GetById"
-        //       , inputParamMapper: delegate (SqlParameterCollection paramCollection)
-        //       {
-        //           paramCollection.AddWithValue("@Id", id);
-        //       }
-        //       , map: delegate (IDataReader reader, short set)
-        //       {
-        //           p = MapPlant(reader);
-        //       }
-        //       );
+            DataProvider.ExecuteCmd(GetConnection, "dbo.Plants_GetById"
+               , inputParamMapper: delegate (SqlParameterCollection paramCollection)
+               {
+                   paramCollection.AddWithValue("@Id", id);
+               }
+               , map: delegate (IDataReader reader, short set)
+               {
+                   p = MapPlant(reader);
+               }
+               );
 
-        //    return p;
-        //}
+            return p;
+        }
 
         public int InsertPlant(PlantAddRequest model)
         {
@@ -100,20 +101,23 @@ namespace Plants.Web.Services
 
         ////------------------------------------------------------
 
-        //private Plant MapPlant(IDataReader reader)
-        //{
-        //    Plant p = new Plant();
-        //    int startingIndex = 0; //startingOrdinal
+        private Plant MapPlant(IDataReader reader)
+        {
+            Plant p = new Plant();
+            int startingIndex = 0; 
 
-        //    p.Id = reader.GetSafeInt32(startingIndex++);
-        //    p.Name = reader.GetSafeString(startingIndex++);
-        //    p.Description = reader.GetSafeString(startingIndex++);
-        //    p.Keyword = reader.GetSafeString(startingIndex++);
-        //    p.CategoryId = reader.GetSafeInt32(startingIndex++);
-        //    p.SizeId = reader.GetSafeInt32(startingIndex++);
-        //    p.IsBioluminescent = reader.GetSafeBool(startingIndex++);
+            p.Id = reader.GetSafeInt32(startingIndex++);
+            p.Name = reader.GetSafeString(startingIndex++);
+            p.Description = reader.GetSafeString(startingIndex++);
+            p.Keywords = reader.GetSafeString(startingIndex++);
+            p.CategoryId = reader.GetSafeInt32Nullable(startingIndex++);
+            p.CategoryType = reader.GetSafeString(startingIndex++);
+            p.SizeId = reader.GetSafeInt32Nullable(startingIndex++);
+            p.Feet = reader.GetSafeDoubleNullable(startingIndex++);
+            p.Meters = reader.GetSafeDoubleNullable(startingIndex++);
+            p.IsBioluminescent = reader.GetSafeBoolNullable(startingIndex++);
 
-        //    return p;
-        //}
+            return p;
+        }
     }
 }

@@ -5,3 +5,73 @@
 
 <h2>Display</h2>
 
+<div data-ng-controller="plantListController as listCtrl">
+    <div class="list-group" data-ng-repeat="item in listCtrl">
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">{{item.Name}}</h4>
+            <p class="list-group-item-text">Group: {{item.CategoryType}}</p>
+            <p class="list-group-item-text">Size: {{item.Feet}} ft</p>
+            <p class="list-group-item-text">Bioluminescent: {{item.IsBioluminescent}}</p>
+        </a>
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/Scripts/myApp.services.plants.js"></script>
+
+    <script type="text/javascript">
+        (function () {
+            'use strict';
+
+            angular.module(APPNAME)
+            .factory('plantService', PlantServiceFactory);
+
+            PlantServiceFactory.$inject = ['$baseService', '$myApp'];
+
+            function PlantServiceFactory($baseService, $myApp) {
+                var aServiceObject = myApp.services.plants;
+                var newService = $baseService.merge(true, {}, aServiceObject, $baseService);
+                return newService;
+            }
+        })();
+
+        (function () {
+            'use strict';
+
+            angular.module(APPNAME)
+            .controller('plantListController', PlantListController);
+
+            PlantListController.$inject - [
+                  '$scope'
+                , '$baseController'
+                , '$plantService'
+            ];
+
+            function PlantListController(
+                                  $scope
+                , $baseController
+                , $plantService
+                ) {
+
+                var vm = this;
+                $baseController.merge(vm, $baseController);
+                vm.$scope = $scope;
+                vm.$plantService = $plantService;
+                vm.notify = vm.$plantService.getNotifier($scope);
+
+                render();
+
+                function render() {
+                    vm.getPlant(vm.newPlantId);
+                }
+
+            }
+        })()
+
+    </script>
+
+}
+
+
+

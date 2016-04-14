@@ -32,3 +32,35 @@ myApp.services.plants.update = function (plantId, plantData, onSuccess, onError)
 
     $.ajax(url, settings);
 }
+
+myApp.services.plants.get = function (onSuccess, onError) {
+    var url = "/api/plants";
+
+    var settings = {
+        cache: false
+    	, contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+	    , data: plantData
+    	, dataType: "json"
+	    , success: onSuccess
+	    , error: onError
+	    , type: "GET"
+    };
+
+    $.ajax(url, settings);
+}
+
+myApp.services.plants.getById = function (plantData, onSuccess, onError) {
+    var url = "/api/plants";
+
+    var settings = {
+        cache: false
+    	, contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+	    , data: plantData
+    	, dataType: "json"
+	    , success: onSuccess
+	    , error: onError
+	    , type: "GET"
+    };
+
+    $.ajax(url, settings);
+}
