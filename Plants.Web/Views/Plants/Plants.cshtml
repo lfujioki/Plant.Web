@@ -230,12 +230,12 @@
                 function _submit() {
                     vm.showNewPlantErrors = true;
 
-                    // Check if form not valid, then exit out of method
+                    // If form not valid, then exit out of method
                     if (!vm.queryForm.$valid) {
                         return;
                     }
 
-                    // Check if plantId, then call PUT request, else call POST request
+                    // If no plantId, then call POST request, else call PUT request
                     if (vm.newPlantId !== parseInt(vm.newPlantId, 10)) {
                         vm.$plantService.add(vm.newPlant, vm.onAddPlantSuccess, vm.onAddPlantError);
                     }

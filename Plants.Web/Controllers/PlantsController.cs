@@ -20,12 +20,13 @@ namespace Plants.Web.Controllers
         {
             ItemsViewModel<Dictionary<string, int>, int?> model = new ItemsViewModel<Dictionary<string, int>, int?>();
 
+            // If model.Items does not exist, instantiate List 
             if (model.Items == null)
             {
                 model.Items = new List<Dictionary<string, int>>();
             }
-            model.Item = id;
 
+            model.Item = id;
             model.Items.Add(SizeEntities.NotSet.ToDictionaryByName(1));
             model.Items.Add(CategoryEntities.NotSet.ToDictionaryByName(1));
 
