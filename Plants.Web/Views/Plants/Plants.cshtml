@@ -8,8 +8,8 @@
 <h2>Add a Plant: @Model.Item</h2>
 
 <div data-ng-controller="plantController as plantCtrl" data-ng-cloak>
-    {{plantCtrl.newPlant}}
-    {{plantCtrl.newPlantId}}
+    @*{{plantCtrl.newPlant}}
+        {{plantCtrl.newPlantId}}*@
     <form id="plantForm"
           name="plantCtrl.queryForm"
           novalidate>
@@ -28,9 +28,12 @@
                    required />
 
             <div role="alert" class="help-inline error">
-                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.required">Name is required</span>
-                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.minlength">Too short! Name must be at least 2 chars</span>
-                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.maxlength">Too long! Name must be less than 100 chars</span>
+                <span class="error"
+                      ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.required">Name is required</span>
+                <span class="error"
+                      ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.minlength">Too short! Name must be at least 2 chars</span>
+                <span class="error"
+                      ng-show="plantCtrl.showNewPlantErrors && plantCtrl.queryForm.name.$error.maxlength">Too long! Name must be less than 100 chars</span>
             </div>
         </div>
 
@@ -51,7 +54,8 @@
                 <option value="">-- Select Category --</option>
             </select>
             <div role="alert" class="help-inline error">
-                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()"><br /><br />Please select a Category</span>
+                <span class="error"
+                      ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()"><br /><br />Please select a Category</span>
             </div>
         </div>
 
@@ -66,7 +70,10 @@
                 <option value="">-- Select Size --</option>
             </select>
             <div role="alert" class="help-inline error">
-                <span class="error" ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()"><br /><br />Please select a Size</span>
+                <span class="error"
+                      ng-show="plantCtrl.showNewPlantErrors && plantCtrl.showNewPlantTypeErrors()">
+                    <br /><br />Please select a Size
+                </span>
             </div>
         </div>
 
@@ -79,7 +86,8 @@
                    id="isBioluminescent"
                    ng-true-value="'True'"
                    ng-false-value="'False'" />
-        </label><br /><br />
+        </label>
+        <br /><br />
 
         <button type="button"
                 id="cmdResetQuestion"
@@ -101,6 +109,7 @@
 @section scripts {
 
     <script type="text/javascript">
+        // Store ViewModel items in variables
         myApp.page.plantId = @Html.RawJson(Model.Item);
         myApp.page.sizeTypes = @Html.RawJson(Model.Items[0]);
         myApp.page.categoryTypes = @Html.RawJson(Model.Items[1]);
@@ -109,6 +118,10 @@
     <script src="~/Scripts/myApp.services.plants.js"></script>
 
     <script type="text/javascript">
+        /**
+         * PlantServiceFactory Factory
+         * @@namespace Factories
+         */
         (function () {
             'use strict';
 
@@ -117,6 +130,11 @@
 
             PlantServiceFactory.$inject = ['$baseService', '$myApp'];
 
+            /**
+             * @@namespace PlantServiceFactory
+             * @@desc Plant services
+             * @@memberOf Factories
+             */
             function PlantServiceFactory($baseService, $myApp) {
                 var aServiceObject = myApp.services.plants;
                 var newService = $baseService.merge(true, {}, aServiceObject, $baseService);
@@ -124,6 +142,10 @@
             }
         })();
 
+        /**
+         * PlantController Controller
+         * @@namespace Controllers
+         */
         (function () {
             'use strict';
 
@@ -136,6 +158,11 @@
                 , '$plantService'
             ];
 
+            /**
+             * @@namespace PlantController
+             * @@desc Plant controller for add and update
+             * @@memberOf Controllers
+             */
             function PlantController(
                   $scope
                 , $baseController
@@ -143,11 +170,13 @@
                 ) {
 
                 var vm = this;
+
                 $baseController.merge(vm, $baseController);
                 vm.$scope = $scope;
                 vm.$plantService = $plantService;
                 vm.notify = vm.$plantService.getNotifier($scope);
 
+                // plant variables
                 vm.newPlant = {};
                 vm.queryForm = null;
                 vm.showNewPlantErrors = false;
@@ -156,9 +185,11 @@
                 vm.sizeTypes = myApp.page.sizeTypes;
                 vm.testTypes = myApp.page.testTypes;
 
+                // Ajax Caller Methods
                 vm.getPlant = _getPlant;
                 vm.submit = _submit;
 
+                // Ajax Success & Error Callbacks
                 vm.onGetPlantSuccess = _onGetPlantSuccess;
                 vm.onGetPlantError = _onGetPlantError;
                 vm.onAddPlantSuccess = _onAddPlantSuccess;
@@ -166,9 +197,9 @@
                 vm.onUpdatePlantSuccess = _onUpdatePlantSuccess;
                 vm.onUpdatePlantError = _onUpdatePlantError;
 
+                // Helpers
                 vm.hasErrorClass = _hasErrorClass;
                 vm.resetQueryForm = _resetQueryForm;
-
                 vm.showNewQuestionTypeErrors = _showNewQuestionTypeErrors;
                 vm.ratingTypeShowError = _ratingTypeShowError;
 
@@ -182,10 +213,9 @@
                     if (plantId === parseInt(plantId, 10)) {
                         vm.$plantService.getById(plantId, vm.onGetPlantSuccess, vm.onGetPlantError);
                     }
-
                 }
 
-                function _onGetPlantSuccess(data) {
+                function _onGetPlantSuccess(data, status, xhr) {
                     vm.notify(function () {
                         if (data && data.Item) {
                             vm.newPlant = data.Item;
@@ -193,65 +223,58 @@
                     });
                 }
 
-                function _onGetPlantError(jqXhr, error) {
+                function _onGetPlantError(jqXHR, textStatus, errorThrown) {
                     vm.$log.log(error)
                 }
 
                 function _submit() {
                     vm.showNewPlantErrors = true;
 
+                    // Check if form not valid, then exit out of method
                     if (!vm.queryForm.$valid) {
                         return;
                     }
 
+                    // Check if plantId, then call PUT request, else call POST request
                     if (vm.newPlantId !== parseInt(vm.newPlantId, 10)) {
                         vm.$plantService.add(vm.newPlant, vm.onAddPlantSuccess, vm.onAddPlantError);
-                        vm.$log.log('sending out ajax call to insert');
                     }
-                    else{
-                        vm.$log.log(vm.newPlantId);
+                    else {
                         vm.newPlant.Id = vm.newPlantId;
-                        vm.$log.log(vm.newPlant);
-
-
-                        vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onUpdatePlantSuccess, vm.onUpdatePlantError);
-                        vm.$log.log('sending out ajax call to update');
+                        vm.$plantService.update(vm.newPlantId, vm.newPlant, vm.onUpdatePlantSuccess,
+                            vm.onUpdatePlantError);
                     }
                 };
 
-                function _onAddPlantSuccess(data) {
-
+                function _onAddPlantSuccess(data, status, xhr) {
                     vm.notify(function () {
                         if (data && data.Item) {
-                            vm.$log.log('Successfully submitted plant');
                             vm.newPlantId = data.Item;
-                            vm.$log.log(vm.newPlantId);
-
                             vm.$alertService.success('Successfully submitted plant.');
                         }
                     });
                 }
 
-                function _onAddPlantError(jqXhr, error) {
+                function _onAddPlantError(jqXHR, textStatus, errorThrown) {
                     vm.$log.log(error)
                     vm.$alertService.error('There was a problem with the submit request. Please try again.');
                 }
 
-                function _onUpdatePlantSuccess(data){
+                function _onUpdatePlantSuccess(data, status, xhr){
                     vm.notify(function () {
                         if (data) {
-                            vm.$log.log('Successfully updated plant');
                             vm.$alertService.success('Successfully updated plant');
                         }
                     });
                 }
 
-                function _onUpdatePlantError(jqXhr, error) {
+                function _onUpdatePlantError(jqXHR, textStatus, errorThrown) {
                     vm.$log.log(error)
                     vm.$alertService.error('There was a problem with the update request. Please try again.');
                 }
 
                 function _hasErrorClass(valid) {
+                    // If form input not valid and has errors, return has-error class
                     if (valid == false && vm.showNewPlantErrors == true) {
                         return 'has-error';
                     } else if (valid == true) {
@@ -281,8 +304,5 @@
                 }
             }
         })();
-
-
-
     </script>
 }

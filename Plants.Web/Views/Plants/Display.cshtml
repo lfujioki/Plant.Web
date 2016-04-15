@@ -21,6 +21,10 @@
     <script src="~/Scripts/myApp.services.plants.js"></script>
 
     <script type="text/javascript">
+        /**
+         * PlantServiceFactory Factory
+         * @@namespace Factories
+         */
         (function () {
 
             'use strict';
@@ -30,6 +34,11 @@
 
             PlantServiceFactory.$inject = ['$baseService', '$myApp'];
 
+            /**
+             * @@namespace PlantServiceFactory
+             * @@desc Plant services
+             * @@memberOf Factories
+             */
             function PlantServiceFactory($baseService, $myApp) {
                 var aServiceObject = myApp.services.plants;
                 var newService = $baseService.merge(true, {}, aServiceObject, $baseService);
@@ -37,6 +46,10 @@
             }
         })();
 
+        /**
+         * PlantListController Controller
+         * @@namespace Controllers
+         */
         (function () {
             'use strict';
 
@@ -49,6 +62,11 @@
                 , '$plantService'
             ];
 
+            /**
+             * @@namespace PlantListController
+             * @@desc Plant controller for retrieving a list
+             * @@memberOf Controllers
+             */
             function PlantListController(
                   $scope
                 , $baseController
@@ -61,10 +79,13 @@
                 vm.$plantService = $plantService;
                 vm.notify = vm.$plantService.getNotifier($scope);
 
+                // plant list  variables
                 vm.plantList = {};
 
+                // Ajax Caller Methods
                 vm.getPlants = _getPlants;
 
+                // Ajax Success & Error Callbacks
                 vm.onGetPlantsSuccess = _onGetPlantsSuccess;
                 vm.onGetPlantsError = _onGetPlantsError;
 
