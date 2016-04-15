@@ -16,7 +16,6 @@ myApp.services.plants.add = function (plantData, onSuccess, onError) {
     $.ajax(url, settings);
 }
 
-// if plantId is included in data, then just the plantdata obj
 myApp.services.plants.update = function (plantId, plantData, onSuccess, onError) {
     var url = "/api/plants/" + plantId;
 

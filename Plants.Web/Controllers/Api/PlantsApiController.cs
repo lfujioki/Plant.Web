@@ -55,7 +55,7 @@ namespace Plants.Web.Controllers.Api
         [Route("{id:int}"), HttpPut]
         public HttpResponseMessage UpdatePlant(PlantUpdateRequest model, int id)
         {
-            // if the Model does not pass validation, there will be an Error response returned with errors
+            // If the Model does not pass validation, then return Error response with errors
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
@@ -66,15 +66,6 @@ namespace Plants.Web.Controllers.Api
             _plantsService.UpdatePlant(model);
 
             return Request.CreateResponse(response);
-        }
-
-
-
-
-        [Route("echo"), HttpPost]
-        public HttpResponseMessage EchoPlant(PlantAddRequest model)
-        {
-            return Request.CreateResponse(model);
         }
     }
 }
